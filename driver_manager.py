@@ -1,11 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from time import sleep
+from selenium.webdriver.common.keys import Keys
 
 class DriverManager():
-    def __init__(self, url) -> None:
+    def __init__(self, url, headless: False) -> None:
         self.url = url
         options = webdriver.FirefoxOptions()
-        options.headless = True
+        options.headless = headless
         self.driver = webdriver.Firefox(options=options)
     
     def connect_to_page(self):
@@ -14,6 +16,7 @@ class DriverManager():
 
     def open_practice(self):
         print("Searching for pratice button")
+
         button = self.driver.execute_script('return document.getElementsByClassName("gwt-Anchor prompt-button bkgnd-blue")')
         if len(button) > 0 and button != None:
             print("Found button")
@@ -21,6 +24,31 @@ class DriverManager():
         else:
             print("Could not find button")
             self.close()
+
+    def open_race(self):
+        print("Searching for race button")
+
+        button = self.driver.execute_script('return document.getElementsByClassName("gwt-Anchor prompt-button bkgnd-green")')
+        if len(button) > 0 and button != None:
+            print("Found button")
+            button[0].click()
+        else:
+            print("Could not find button")
+            self.close()
+
+    def get_stats(self):
+        print("Searching for stats")
+
+        stats = self.driver.execute_script('return document.getElementsByClassName("tblOwnStats")')
+        if len(stats) == 0:
+            print("Could not find stats")
+            return None
+        html = stats[0].get_attribute('innerHTML')
+        file = open("stats.html", "w+")
+        file.write(html)
+        file.close()
+
+        print("Saved stats to stats.html")
 
     def get_text_and_focus_input_box(self):
         text_elements = self.driver.execute_script('return document.querySelectorAll("[unselectable=\'on\']")')
@@ -41,4 +69,17 @@ class DriverManager():
         self.driver.close()
 
     def write_char(self, char):
+        if char == "\b":
+            ActionChains(self.driver).key_down(Keys.BACKSPACE).perform()
+            sleep(0.1)
+            ActionChains(self.driver).key_up(Keys.BACKSPACE).perform()
+            pass
         ActionChains(self.driver).send_keys(char).perform()
+
+    def has_race_started(self):
+        light_label = self.driver.execute_script("return document.getElementsByClassName('lightLabel')")
+
+        if len(light_label) == 0:
+            return True
+        
+        return False
