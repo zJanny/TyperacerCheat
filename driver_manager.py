@@ -73,7 +73,7 @@ class DriverManager():
             ActionChains(self.driver).key_down(Keys.BACKSPACE).perform()
             sleep(0.1)
             ActionChains(self.driver).key_up(Keys.BACKSPACE).perform()
-            pass
+            return
         ActionChains(self.driver).send_keys(char).perform()
 
     def has_race_started(self):
