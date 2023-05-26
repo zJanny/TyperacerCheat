@@ -1,33 +1,20 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
+from driver_manager import DriverManager
 from time import sleep
 
-driver = webdriver.Firefox()
-driver.get("https://play.typeracer.com/?universe=lang_de")
+class Cheat():
+    def __init__(self, driver_manager: DriverManager, cpm: int, error_percentage: int) -> None:
+        self.driver = driver_manager
+        self.cpm = cpm
+        self.error_percentage = error_percentage
 
-def writeText(driver, text):
-    for char in text:
-        ActionChains(driver).send_keys(char).perform()
-        sleep(0.25)
-sleep(3)
-print("getting button...")
-button = driver.execute_script('return document.getElementsByClassName("gwt-Anchor prompt-button bkgnd-blue")')
-if len(button) > 0 and button != None:
-    print("Found button")
-    button[0].click()
-    sleep(2)
-    text_elements = driver.execute_script('return document.querySelectorAll("[unselectable=\'on\']")')
-    final_text = ""
-    for text in text_elements:
-        final_text += text.get_attribute('innerHTML')
-    print("Found text:")
-    print(final_text)
-    sleep(2)
-    input_box = driver.execute_script("return document.getElementsByClassName('txtInput')")
-    input_box[0].click()
-    writeText(driver, final_text)
-else:
-    print("Could not find button")
+    def practice(self):
+        sleep(1)
+        self.driver.open_practice()
 
-driver.close()
+        sleep(1)
+        text = self.driver.get_text_and_focus_input_box()
+
+        sleep(2.5)
+        for char in text:   
+            self.driver.write_char(char)
+            sleep(0.25)
