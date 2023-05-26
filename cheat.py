@@ -29,7 +29,7 @@ class Cheat():
         return new_text
 
     def start(self):
-        sleep(1)
+        input("Press any key to start")
         self.driver.open_race()
 
         sleep(1)
