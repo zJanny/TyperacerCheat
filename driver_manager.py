@@ -18,27 +18,40 @@ class DriverManager():
         print("Connecting to " + self.url)
         self.driver.get(self.url)
 
-    def open_practice(self):
-        print("Searching for pratice button")
-
-        button = self.driver.execute_script('return document.getElementsByClassName("gwt-Anchor prompt-button bkgnd-blue")')
+    def find_button(self, button_class):
+        button = self.driver.execute_script('return document.getElementsByClassName("' + button_class + '")')
         if len(button) > 0 and button != None:
             print("Found button")
             button[0].click()
         else:
             self.close()
             raise ButtonNotFoundException
+        
+    def get_enemies(self):
+        enemies = self.driver.execute_script('return document.getElementsByClassName("lblName")')
 
+        print("\nEnemies: \033[92m")
+        for i in range(1, len(enemies)):
+            print(enemies[i].get_attribute('innerHTML'))
+            
+        print("\033[0m")
+        
     def open_race(self):
         print("Searching for race button")
 
-        button = self.driver.execute_script('return document.getElementsByClassName("gwt-Anchor prompt-button bkgnd-green")')
-        if len(button) > 0 and button != None:
-            print("Found button")
-            button[0].click()
-        else:
-            self.close()
-            raise ButtonNotFoundException
+        try:
+            self.find_button("gwt-Anchor prompt-button bkgnd-green")
+        except ButtonNotFoundException:
+            print("Could not find race button, trying to find race again button")
+            self.find_button("xButton")
+            self.find_button("raceAgainLink")
+
+    
+
+    def open_practice(self):
+        print("Searching for pratice button")
+
+        self.find_button("gwt-Anchor prompt-button bkgnd-blue")
 
     def get_stats(self):
         os.system("clear")

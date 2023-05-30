@@ -29,7 +29,6 @@ class Cheat():
         return new_text
 
     def start(self):
-        input("Type start to start: ")
         self.driver.open_race()
 
         sleep(1)
@@ -43,6 +42,7 @@ class Cheat():
         sleep(0.25)
         os.system("clear")
         print("Race has started")
+        self.driver.get_enemies()
         bar = IncrementalBar('Typing', max=len(text), suffix='%(percent).1f%% - %(eta)ds')
         for char in text:   
             self.driver.write_char(char)
@@ -51,3 +51,8 @@ class Cheat():
         print("\nFinished typing")
         sleep(2)
         self.driver.get_stats()
+
+        again = input("Start new race? y/n \n")
+
+        if again == "y":
+            self.start()
