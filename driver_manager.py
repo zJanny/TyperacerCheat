@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import os
 from exceptions import ButtonNotFoundException
 from exceptions import StatsNotFoundException
+from exceptions import CaptchaImageNotFoundException
 
 class DriverManager():
     def __init__(self, url, headless: False) -> None:
@@ -40,6 +41,26 @@ class DriverManager():
             
         print("\033[0m")
         
+    def captcha_required(self):
+        button = self.driver.execute_script('return document.getElementsByClassName("gwt-Button")')
+
+        if len(button) > 0:
+            button[0].click()
+            print("A captcha is required")
+            sleep(1)
+            return True
+        
+        return False
+
+    def get_captcha_image(self):
+        image = self.driver.execute_script('return document.getElementsByClassName("challengeImg")')
+
+        if len(image) == 0:
+            raise CaptchaImageNotFoundException
+        
+        print("Downloaded captcha image")
+        return image[0].screenshot_as_png
+
     def open_race(self):
         print("Searching for race button")
 
