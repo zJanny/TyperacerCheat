@@ -37,7 +37,7 @@ class DriverManager():
             print("Could not find button")
             self.close()
 
-    def get_stats(self, html):
+    def get_stats(self):
         print("Searching for stats")
 
         stats = self.driver.execute_script('return document.getElementsByClassName("tblOwnStats")')
