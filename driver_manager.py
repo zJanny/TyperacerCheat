@@ -24,7 +24,6 @@ class DriverManager():
             print("Found button")
             button[0].click()
         else:
-            self.close()
             raise ButtonNotFoundException
         
     def get_enemies(self):
@@ -59,7 +58,6 @@ class DriverManager():
 
         stats = self.driver.execute_script('return document.getElementsByClassName("tblOwnStats")')
         if len(stats) == 0:
-            self.close
             raise StatsNotFoundException
         html = stats[0].get_attribute('innerHTML')
 
