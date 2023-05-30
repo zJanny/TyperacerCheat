@@ -3,6 +3,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
+import os
+from exceptions import ButtonNotFoundException
+from exceptions import StatsNotFoundException
 
 class DriverManager():
     def __init__(self, url, headless: False) -> None:
@@ -23,8 +26,8 @@ class DriverManager():
             print("Found button")
             button[0].click()
         else:
-            print("Could not find button")
             self.close()
+            raise ButtonNotFoundException
 
     def open_race(self):
         print("Searching for race button")
@@ -34,16 +37,17 @@ class DriverManager():
             print("Found button")
             button[0].click()
         else:
-            print("Could not find button")
             self.close()
+            raise ButtonNotFoundException
 
     def get_stats(self):
+        os.system("clear")
         print("Searching for stats")
 
         stats = self.driver.execute_script('return document.getElementsByClassName("tblOwnStats")')
         if len(stats) == 0:
-            print("Could not find stats")
-            return None
+            self.close
+            raise StatsNotFoundException
         html = stats[0].get_attribute('innerHTML')
 
         soup = BeautifulSoup(html, "html.parser")
@@ -54,7 +58,7 @@ class DriverManager():
         accuracy = all_divs[3].text
         points = all_divs[5].text
 
-        print("Stats: \nCPM: " + speed + "\nTime: " + time + " min\nAccuracy: " + accuracy + "\nPoints: " + points)
+        print("\nStats: \nCPM: \033[92m" + speed + "\n\033[0mTime: \033[92m" + time + " min\n\033[0mAccuracy: \033[92m" + accuracy + "\n\033[0mPoints: \033[92m" + points + "\n\033[0m")
 
     def get_text_and_focus_input_box(self):
         text_elements = self.driver.execute_script('return document.querySelectorAll("[unselectable=\'on\']")')
