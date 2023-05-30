@@ -27,11 +27,13 @@ class Cheat():
 
         print("Added " + str(len(new_text) - len(text)) + " errors")
         return new_text
-
+    
     def start(self):
+        sleep(2)
         self.driver.open_race()
 
         sleep(1)
+        self.driver.check_for_popup()
         text = self.driver.get_text_and_focus_input_box()
         text = self.add_errors(text)
         spinner = Spinner("Waiting for race to start ")
@@ -51,6 +53,7 @@ class Cheat():
         print("\nFinished typing")
         sleep(2)
         self.driver.get_stats()
+        self.driver.get_game_status()
 
         again = input("Start new race? y/n \n")
 

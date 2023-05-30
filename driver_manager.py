@@ -26,6 +26,11 @@ class DriverManager():
         else:
             raise ButtonNotFoundException
         
+    def get_game_status(self):
+        gameStatus = self.driver.execute_script('return document.getElementsByClassName("gameStatusLabel")')[0].get_attribute('innerHTML')
+
+        print(gameStatus)
+
     def get_enemies(self):
         enemies = self.driver.execute_script('return document.getElementsByClassName("lblName")')
 
@@ -42,10 +47,14 @@ class DriverManager():
             self.find_button("gwt-Anchor prompt-button bkgnd-green")
         except ButtonNotFoundException:
             print("Could not find race button, trying to find race again button")
-            self.find_button("xButton")
             self.find_button("raceAgainLink")
 
-    
+    def check_for_popup(self):
+        popup = self.driver.execute_script('return document.getElementsByClassName("DialogBox trPopupDialog rewardPromptPopup")')
+
+        if len(popup) > 0:
+            self.driver.execute_script('return document.getElementsByClassName("DialogBox trPopupDialog rewardPromptPopup")[0].remove()')
+            self.open_race()
 
     def open_practice(self):
         print("Searching for pratice button")
