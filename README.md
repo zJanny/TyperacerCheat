@@ -1,4 +1,4 @@
-#Starting the script
+# Starting the script
 Before you can start the script, you need to install the requiered dependecies
 ```
 pip install selenium beautifulsoup4 progress
@@ -10,7 +10,7 @@ After the depedencies are installed, you can launch the script with the followin
 python main.py
 ```
 
-#Configuring
+# Configuring
 If you want to use a diffrent URL, or turn headless mode on/off, you need to edit this line in main.py:
 
 ```
