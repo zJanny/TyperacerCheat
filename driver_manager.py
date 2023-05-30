@@ -55,6 +55,7 @@ class DriverManager():
         if len(popup) > 0:
             self.driver.execute_script('return document.getElementsByClassName("DialogBox trPopupDialog rewardPromptPopup")[0].remove()')
             self.open_race()
+            sleep(2)
 
     def open_practice(self):
         print("Searching for pratice button")
