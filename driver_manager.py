@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from selenium.webdriver.common.keys import Keys
+from bs4 import BeautifulSoup
 
 class DriverManager():
     def __init__(self, url, headless: False) -> None:
@@ -36,7 +37,7 @@ class DriverManager():
             print("Could not find button")
             self.close()
 
-    def get_stats(self):
+    def get_stats(self, html):
         print("Searching for stats")
 
         stats = self.driver.execute_script('return document.getElementsByClassName("tblOwnStats")')
@@ -44,11 +45,16 @@ class DriverManager():
             print("Could not find stats")
             return None
         html = stats[0].get_attribute('innerHTML')
-        file = open("stats.html", "w+")
-        file.write(html)
-        file.close()
 
-        print("Saved stats to stats.html")
+        soup = BeautifulSoup(html, "html.parser")
+        all_divs = soup.find_all("div")
+
+        speed = all_divs[1].text
+        time = all_divs[2].text.strip()
+        accuracy = all_divs[3].text
+        points = all_divs[5].text
+
+        print("Stats: \nCPM: " + speed + "\nTime: " + time + " min\nAccuracy: " + accuracy + "\nPoints: " + points)
 
     def get_text_and_focus_input_box(self):
         text_elements = self.driver.execute_script('return document.querySelectorAll("[unselectable=\'on\']")')

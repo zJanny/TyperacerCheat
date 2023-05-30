@@ -35,7 +35,7 @@ class Cheat():
         sleep(1)
         text = self.driver.get_text_and_focus_input_box()
         text = self.add_errors(text)
-        spinner = Spinner("Waiting for race to start")
+        spinner = Spinner("Waiting for race to start ")
 
         while not self.driver.has_race_started():
             sleep(0.15)
