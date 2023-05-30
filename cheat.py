@@ -49,7 +49,7 @@ class Cheat():
         for char in text:   
             self.driver.write_char(char)
             bar.next()
-            sleep((60 / self.cpm))
+            sleep((60 / self.cpm) * random.uniform(0.8, 1.2))
         print("\nFinished typing")
         sleep(2)
         self.driver.get_stats()
