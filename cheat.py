@@ -7,7 +7,6 @@ import time
 import math
 import os
 import numpy as np
-import pytesseract
 import cv2
 
 class Cheat():
@@ -30,17 +29,6 @@ class Cheat():
 
         print("Added " + str(len(new_text) - len(text)) + " errors")
         return new_text
-    
-    def solve_captcha(self, image):
-        print("Trying to solve captcha...")
-        nparr = np.fromstring(image, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        text = pytesseract.image_to_string(img)
-        print(text)
-
-        #for char in text:
-            #self.driver.write_char(char)
-            #sleep((60 / self.cpm) * random.uniform(0.8, 1.2))
     
     def start(self):
         sleep(2)
@@ -68,9 +56,6 @@ class Cheat():
         sleep(2)
         self.driver.get_stats()
         self.driver.get_game_status()
-
-        if self.driver.captcha_required():
-            self.solve_captcha(self.driver.get_captcha_image())
 
         again = input("Start new race? y/n \n")
 
